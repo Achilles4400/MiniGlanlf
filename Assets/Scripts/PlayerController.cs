@@ -20,6 +20,8 @@ public class PlayerController : MonoBehaviour
     public float trunkSpawnTimeInterval;
     public float acornSpawnShift;
     public float stillnessThreshold;
+    public float initialDrag;
+    public float dragIncreaseExponent;
 
     private Rigidbody rb;
     private SphereCollider collider;
@@ -34,6 +36,7 @@ public class PlayerController : MonoBehaviour
         direction,
         branch,
         growAcorn,
+        enterDrop,
         drop,
         reset
     }
@@ -57,6 +60,7 @@ public class PlayerController : MonoBehaviour
         isOnGround = true; // Start on ground
         rb.useGravity = false; // No fall
         collider.enabled = false; // No collision
+        rb.drag = initialDrag;
     }
 
     // Update is called once per frame
@@ -67,7 +71,10 @@ public class PlayerController : MonoBehaviour
 
     private void getInput()
     {
-        isSpacePressed = Input.GetKeyDown(KeyCode.Space);
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            isSpacePressed = true;
+        }
         horizontalInput = Input.GetAxis("Horizontal");
         verticalInput = Input.GetAxis("Vertical");
     }
@@ -101,18 +108,23 @@ public class PlayerController : MonoBehaviour
                 // 6 grow acorn
                 growAcornPhase();
                 break;
+            case GrowthState.enterDrop:
+                // 7 enter drop phase
+                enterDropPhase();
+                break;
             case GrowthState.drop:
-                // 7 drop the acorn
+                // 8 drop the acorn
                 dropPhase();
                 break;
             case GrowthState.reset:
-                // 8 reset rotation
+                // 9 reset rotation
                 resetPhase();
                 break;
             default:
                 Debug.Log("Vous etes des glands!");
                 break;
         }
+        isSpacePressed = false;
     }
 
     private void raisePhase()
@@ -121,10 +133,6 @@ public class PlayerController : MonoBehaviour
         raiseTimer += Time.fixedDeltaTime;
         if (raiseTimer < raiseDuration)
         {
-            // Get controller key
-            //horizontalInput = Input.GetAxis("Horizontal");
-            //verticalInput = Input.GetAxis("Vertical");
-
             // Move player
             transform.Translate(Vector3.up * Time.fixedDeltaTime * raiseVerticalSpeed);
             transform.Translate(Vector3.right * Time.fixedDeltaTime * raiseLateralSpeed * horizontalInput);
@@ -202,9 +210,6 @@ public class PlayerController : MonoBehaviour
         branchTimer += Time.fixedDeltaTime;
         if (branchTimer < branchDuration)
         {
-            // Get controller key
-            //horizontalInput = Input.GetAxis("Horizontal");
-
             // Move player
             transform.Translate(Vector3.forward * Time.fixedDeltaTime * branchForwardSpeed);
             transform.Translate(Vector3.right * Time.fixedDeltaTime * branchLateralSpeed * horizontalInput);
@@ -257,19 +262,26 @@ public class PlayerController : MonoBehaviour
         else
         {
             // End grow acorn phase
-            growthState = GrowthState.drop;
+            growthState = GrowthState.enterDrop;
             growAcornTimer = 0;
         }
     }
 
-    private void dropPhase()
+    private void enterDropPhase()
     {
         rb.useGravity = true;
         collider.enabled = true;
+        growthState = GrowthState.drop;
+    }
+
+    private void dropPhase()
+    {
         acorn.transform.position = transform.position; // Acorn follows player
+        rb.drag *= dragIncreaseExponent;
         // End drop Phase
         if (isStill())
         {
+            rb.drag = initialDrag;
             growthState = GrowthState.reset;
             rb.useGravity = false;
             collider.enabled = false;
