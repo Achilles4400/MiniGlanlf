@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Goal
   - Ground
+  - GameOverSurface
   layers:
   - Default
   - TransparentFX

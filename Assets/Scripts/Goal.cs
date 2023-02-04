@@ -10,7 +10,7 @@ public class Goal : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        for(int i = 0; i < transform.childCount; i++)
+        for (int i = 0; i < transform.childCount; i++)
         {
             goalPos.Add(transform.GetChild(i));
         }
@@ -21,6 +21,23 @@ public class Goal : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        switch (other.tag)
+        {
+            case "GameOverSurface":
+                Debug.Log("game over");
+                break;
+
+            case "Goal":
+                Debug.Log("success");
+                break;
+
+            default:
+                break;
+        }
     }
 }
