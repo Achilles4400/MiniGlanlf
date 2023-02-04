@@ -150,15 +150,11 @@ public class PlayerController : MonoBehaviour
         if (raiseTimer < raiseDuration)
         {
             // Move player
-
             Vector3 myForward = new Vector3(mainCamera.transform.forward.x, 0, mainCamera.transform.forward.z).normalized;
             Vector3 myRight = new Vector3(mainCamera.transform.right.x, 0, mainCamera.transform.right.z).normalized;
-
-            Debug.Log(myForward + " " +  myRight);
-
             transform.Translate(Vector3.up * Time.fixedDeltaTime * raiseVerticalSpeed);
-            transform.Translate(myRight * Time.fixedDeltaTime * raiseLateralSpeed * horizontalInput);
-            transform.Translate(myForward * Time.fixedDeltaTime * raiseLateralSpeed * verticalInput);
+            transform.Translate(myRight * Time.fixedDeltaTime * raiseLateralSpeed * horizontalInput, Space.World);
+            transform.Translate(myForward * Time.fixedDeltaTime * raiseLateralSpeed * verticalInput, Space.World);
 
             // Spawn trunk piece
             trunkSpawnTimer += Time.fixedDeltaTime;
@@ -235,8 +231,10 @@ public class PlayerController : MonoBehaviour
         if (branchTimer < branchDuration)
         {
             // Move player
-            transform.Translate(Vector3.forward * Time.fixedDeltaTime * branchForwardSpeed);
-            transform.Translate(Vector3.right * Time.fixedDeltaTime * branchLateralSpeed * horizontalInput);
+            Vector3 myForward = new Vector3(mainCamera.transform.forward.x, 0, mainCamera.transform.forward.z).normalized;
+            Vector3 myRight = new Vector3(mainCamera.transform.right.x, 0, mainCamera.transform.right.z).normalized;
+            transform.Translate(myForward * Time.fixedDeltaTime * branchForwardSpeed, Space.World);
+            transform.Translate(myRight * Time.fixedDeltaTime * branchLateralSpeed * horizontalInput, Space.World);
 
             // Spawn trunk piece
             trunkSpawnTimer += Time.fixedDeltaTime;
