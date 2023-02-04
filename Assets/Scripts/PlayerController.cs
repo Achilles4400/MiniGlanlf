@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public GameObject trunkPiecePrefab;
+    public GameObject trunkPiecePrefab; 
+    public GameObject leavesPrefab;
     public float raiseDuration; // The trunk grows during raiseDuration seconds
+    public float bloomDuration; // The trunk grows during raiseDuration seconds
     public float branchDuration; // The branch grows during branchDuration seconds
     public float raiseVerticalSpeed;
     public float raiseLateralSpeed;
@@ -16,13 +18,16 @@ public class PlayerController : MonoBehaviour
     private enum GrowthState
     {
         raise,
+        bloom,
         branch,
         drop
     }
     private GrowthState growthState;
     private float raiseTimer = 0;
+    private float bloomTimer = 0;
     private float branchTimer = 0;
     private float trunkSpawnTimer = 0;
+    private GameObject leaves;
     private float horizontalInput = 0;
     private float verticalInput = 0;
 
@@ -44,12 +49,19 @@ public class PlayerController : MonoBehaviour
         switch (growthState)
         {
             case GrowthState.raise:
+                // 1 raise the trunk
                 raisePhase();
                 break;
+            case GrowthState.bloom:
+                // 2 grow the leaves
+                bloomPhase();
+                break;
             case GrowthState.branch:
+                // 3 grow the branch
                 branchPhase();
                 break;
             case GrowthState.drop:
+                // 4 drop the acorn
                 dropPhase();
                 break;
             default:
@@ -91,9 +103,31 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            growthState = GrowthState.branch;
+            growthState = GrowthState.bloom;
             raiseTimer = 0;
             trunkSpawnTimer = 0;
+        }
+    }
+    
+    private void bloomPhase()
+    {
+        // Spawn leaves
+        if (bloomTimer == 0)
+        {
+            leaves = Instantiate(leavesPrefab, transform.position, leavesPrefab.transform.rotation);
+            leaves.transform.localScale = Vector3.zero;
+        }
+        // Grow leaves
+        bloomTimer += Time.fixedDeltaTime;
+        if (bloomTimer < bloomDuration)
+        {
+            // Rescale new trunk piece
+            leaves.transform.localScale = leavesPrefab.transform.localScale * bloomTimer / bloomDuration;
+        }
+        else
+        {
+            growthState = GrowthState.branch;
+            bloomTimer = 0;
         }
     }
     private void branchPhase()
@@ -123,6 +157,8 @@ public class PlayerController : MonoBehaviour
                     trunkPiecePrefab.transform.localScale.x * scaleFactor,
                     trunkPiecePrefab.transform.localScale.y,
                     trunkPiecePrefab.transform.localScale.z * scaleFactor);
+                // Rotate new trunk piece
+                newTrunkPiece.transform.Rotate(new Vector3(90, 0, 0));
             }
         }
         else
