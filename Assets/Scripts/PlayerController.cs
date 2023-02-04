@@ -32,6 +32,7 @@ public class PlayerController : MonoBehaviour
     private GameObject arrow;
     private enum GrowthState
     {
+        idle,
         raise,
         bloom,
         enterDirection,
@@ -87,6 +88,10 @@ public class PlayerController : MonoBehaviour
     {
         switch (growthState)
         {
+            case GrowthState.idle:
+                // 0 wait for space bar
+                idlePhase();
+                break;
             case GrowthState.raise:
                 // 1 raise the trunk
                 raisePhase();
@@ -130,6 +135,14 @@ public class PlayerController : MonoBehaviour
         isSpacePressed = false;
     }
 
+    private void idlePhase()
+    {
+        if (isSpacePressed)
+        {
+            growthState = GrowthState.raise;
+        }
+    }
+
     private void raisePhase()
     {
         isOnGround = false;
@@ -137,9 +150,15 @@ public class PlayerController : MonoBehaviour
         if (raiseTimer < raiseDuration)
         {
             // Move player
+
+            Vector3 myForward = new Vector3(mainCamera.transform.forward.x, 0, mainCamera.transform.forward.z).normalized;
+            Vector3 myRight = new Vector3(mainCamera.transform.right.x, 0, mainCamera.transform.right.z).normalized;
+
+            Debug.Log(myForward + " " +  myRight);
+
             transform.Translate(Vector3.up * Time.fixedDeltaTime * raiseVerticalSpeed);
-            transform.Translate(Vector3.right * Time.fixedDeltaTime * raiseLateralSpeed * horizontalInput);
-            transform.Translate(Vector3.forward * Time.fixedDeltaTime * raiseLateralSpeed * verticalInput);
+            transform.Translate(myRight * Time.fixedDeltaTime * raiseLateralSpeed * horizontalInput);
+            transform.Translate(myForward * Time.fixedDeltaTime * raiseLateralSpeed * verticalInput);
 
             // Spawn trunk piece
             trunkSpawnTimer += Time.fixedDeltaTime;
@@ -252,7 +271,6 @@ public class PlayerController : MonoBehaviour
         // Spawn acorn
         if (growAcornTimer == 0)
         {
-            Debug.Log("Pop");
             transform.Translate(Vector3.forward * acornSpawnShift);
             acorn = Instantiate(acornPrefab, transform.position, acornPrefab.transform.rotation);
             acorn.transform.localScale = Vector3.zero;
@@ -295,9 +313,28 @@ public class PlayerController : MonoBehaviour
 
     public void resetPhase()
     {
-        //transform.rotation = Quaternion.identity;
-        transform.rotation = Quaternion.Euler(mainCamera.transform.rotation.x, 0, mainCamera.transform.rotation.z);
+        Debug.Log("init   " + transform.rotation.eulerAngles);
+        Debug.Log("target " + mainCamera.transform.rotation.eulerAngles);
+        Debug.Log("target " + Quaternion.Euler(mainCamera.transform.rotation.eulerAngles.x, mainCamera.transform.rotation.eulerAngles.y, mainCamera.transform.rotation.eulerAngles.z).eulerAngles);
+        
+        //transform.rotation = Quaternion.Euler(mainCamera.transform.rotation.eulerAngles.x, 0, mainCamera.transform.rotation.eulerAngles.z);
+        
+        /*
+        Quaternion rot = transform.rotation;
+        rot.eulerAngles = new Vector3(mainCamera.transform.rotation.eulerAngles.x, 0, mainCamera.transform.rotation.eulerAngles.z);
+        transform.rotation = rot;
+        */
+
+        transform.rotation = Quaternion.Euler(0, mainCamera.transform.rotation.eulerAngles.y, 0);
+
+        //transform.rotation = mainCamera.transform.rotation;
+        Debug.Log("result " + transform.rotation.eulerAngles);
         growthState = GrowthState.raise;
+    }
+
+    private void alignWithCamera()
+    {
+        transform.rotation = Quaternion.Euler(mainCamera.transform.rotation.x, 0, mainCamera.transform.rotation.z);
     }
 
     private bool isStill()
