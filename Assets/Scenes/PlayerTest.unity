@@ -168,7 +168,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c8b64115fe4aef4a8c8180fa2e526d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trunkPiecePrefab: {fileID: 3711423968915613569, guid: f6ac7173f9461d749bff0354e4ecc766, type: 3}
+  trunkPiecePrefab: {fileID: 3711423968915613569, guid: b68b4103d662e4a49802973b614ab02d, type: 3}
   raiseDuration: 7
   branchDuration: 4
   raiseVerticalSpeed: 1
