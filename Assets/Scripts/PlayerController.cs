@@ -4,30 +4,38 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public GameObject trunkPiecePrefab; 
+    public GameObject trunkPiecePrefab;
     public GameObject leavesPrefab;
-    public float raiseDuration; // The trunk grows during raiseDuration seconds
-    public float bloomDuration; // The trunk grows during raiseDuration seconds
-    public float branchDuration; // The branch grows during branchDuration seconds
+    public GameObject acornPrefab;
+    public float raiseDuration;
+    public float branchDuration;
+    public float bloomDuration;
+    public float growAcornDuration;
     public float raiseVerticalSpeed;
     public float raiseLateralSpeed;
     public float branchForwardSpeed;
     public float branchLateralSpeed;
     public float trunkSpawnTimeInterval;
-    
+    public float acornSpawnShift;
+
+    private Rigidbody rb;
+    private SphereCollider collider;
+    private GameObject leaves;
+    private GameObject acorn;
     private enum GrowthState
     {
         raise,
         bloom,
         branch,
+        growAcorn,
         drop
     }
     private GrowthState growthState;
     private float raiseTimer = 0;
     private float bloomTimer = 0;
     private float branchTimer = 0;
+    private float growAcornTimer = 0;
     private float trunkSpawnTimer = 0;
-    private GameObject leaves;
     private float horizontalInput = 0;
     private float verticalInput = 0;
 
@@ -35,6 +43,10 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         trunkSpawnTimer = trunkSpawnTimeInterval;
+        rb = GetComponent<Rigidbody>();
+        collider = GetComponent<SphereCollider>();
+        rb.useGravity = false; // No fall
+        collider.enabled = false; // No collision
     }
 
     // Update is called once per frame
@@ -60,8 +72,12 @@ public class PlayerController : MonoBehaviour
                 // 3 grow the branch
                 branchPhase();
                 break;
+            case GrowthState.growAcorn:
+                // 4 grow acorn
+                growAcornPhase();
+                break;
             case GrowthState.drop:
-                // 4 drop the acorn
+                // 5 drop the acorn
                 dropPhase();
                 break;
             default:
@@ -103,6 +119,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+            // End raise phase
             growthState = GrowthState.bloom;
             raiseTimer = 0;
             trunkSpawnTimer = 0;
@@ -126,6 +143,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+            // End bloom phase
             growthState = GrowthState.branch;
             bloomTimer = 0;
         }
@@ -163,14 +181,44 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            growthState = GrowthState.drop;
+            // End branch Phase
+            growthState = GrowthState.growAcorn;
             branchTimer = 0;
             trunkSpawnTimer = 0;
         }
     }
 
+    private void growAcornPhase()
+    {
+        // Spawn acorn
+        if (growAcornTimer == 0)
+        {
+            Debug.Log("Pop");
+            transform.Translate(Vector3.forward * acornSpawnShift);
+            acorn = Instantiate(acornPrefab, transform.position, acornPrefab.transform.rotation);
+            acorn.transform.localScale = Vector3.zero;
+        }
+        // Grow acorn
+        growAcornTimer += Time.fixedDeltaTime;
+        if (growAcornTimer < growAcornDuration)
+        {
+            // Rescale acorn
+            acorn.transform.localScale = acornPrefab.transform.localScale * growAcornTimer / growAcornDuration;
+        }
+        else
+        {
+            // End grow acorn phase
+            growthState = GrowthState.drop;
+            growAcornTimer = 0;
+        }
+    }
+
     private void dropPhase()
     {
-
+        rb.useGravity = true;
+        collider.enabled = true;
+        acorn.transform.position = transform.position; // Acorn follows player
+        // End drop Phase
+        // TODO
     }
 }
