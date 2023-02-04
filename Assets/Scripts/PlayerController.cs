@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
     public GameObject trunkPiecePrefab;
     public GameObject leavesPrefab;
     public GameObject acornPrefab;
+    public GameObject arrowPrefab;
     public float raiseDuration;
     public float branchDuration;
     public float bloomDuration;
@@ -15,6 +16,7 @@ public class PlayerController : MonoBehaviour
     public float raiseLateralSpeed;
     public float branchForwardSpeed;
     public float branchLateralSpeed;
+    public float arrowRotationSpeed;
     public float trunkSpawnTimeInterval;
     public float acornSpawnShift;
     public float stillnessThreshold;
@@ -23,10 +25,13 @@ public class PlayerController : MonoBehaviour
     private SphereCollider collider;
     private GameObject leaves;
     private GameObject acorn;
+    private GameObject arrow;
     private enum GrowthState
     {
         raise,
         bloom,
+        enterDirection,
+        direction,
         branch,
         growAcorn,
         drop,
@@ -38,6 +43,7 @@ public class PlayerController : MonoBehaviour
     private float branchTimer = 0;
     private float growAcornTimer = 0;
     private float trunkSpawnTimer = 0;
+    private bool isSpacePressed = false;
     private float horizontalInput = 0;
     private float verticalInput = 0;
     private bool isOnGround;
@@ -56,7 +62,14 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        getInput();
+    }
 
+    private void getInput()
+    {
+        isSpacePressed = Input.GetKeyDown(KeyCode.Space);
+        horizontalInput = Input.GetAxis("Horizontal");
+        verticalInput = Input.GetAxis("Vertical");
     }
 
     // Update is called EXACTLY once per frame
@@ -72,20 +85,28 @@ public class PlayerController : MonoBehaviour
                 // 2 grow the leaves
                 bloomPhase();
                 break;
+            case GrowthState.enterDirection:
+                // 3 enter direction phase
+                enterDirectionPhase();
+                break;
+            case GrowthState.direction:
+                // 4 chose direction
+                directionPhase();
+                break;
             case GrowthState.branch:
-                // 3 grow the branch
+                // 5 grow the branch
                 branchPhase();
                 break;
             case GrowthState.growAcorn:
-                // 4 grow acorn
+                // 6 grow acorn
                 growAcornPhase();
                 break;
             case GrowthState.drop:
-                // 5 drop the acorn
+                // 7 drop the acorn
                 dropPhase();
                 break;
             case GrowthState.reset:
-                // 5 drop the acorn
+                // 8 reset rotation
                 resetPhase();
                 break;
             default:
@@ -101,8 +122,8 @@ public class PlayerController : MonoBehaviour
         if (raiseTimer < raiseDuration)
         {
             // Get controller key
-            horizontalInput = Input.GetAxis("Horizontal");
-            verticalInput = Input.GetAxis("Vertical");
+            //horizontalInput = Input.GetAxis("Horizontal");
+            //verticalInput = Input.GetAxis("Vertical");
 
             // Move player
             transform.Translate(Vector3.up * Time.fixedDeltaTime * raiseVerticalSpeed);
@@ -153,17 +174,36 @@ public class PlayerController : MonoBehaviour
         else
         {
             // End bloom phase
-            growthState = GrowthState.branch;
+            growthState = GrowthState.enterDirection;
             bloomTimer = 0;
         }
     }
+
+    private void enterDirectionPhase()
+    {
+        arrow = Instantiate(arrowPrefab, transform.position, arrowPrefab.transform.rotation);
+        growthState = GrowthState.direction; // End enter direction phase
+    }
+
+    private void directionPhase()
+    {
+        arrow.transform.Rotate(Vector3.up * Time.fixedDeltaTime * arrowRotationSpeed);
+        if (isSpacePressed)
+        {
+            // End direction phase
+            growthState = GrowthState.branch;
+            transform.rotation = arrow.transform.rotation;
+            Destroy(arrow);
+        }
+    }
+
     private void branchPhase()
     {
         branchTimer += Time.fixedDeltaTime;
         if (branchTimer < branchDuration)
         {
             // Get controller key
-            horizontalInput = Input.GetAxis("Horizontal");
+            //horizontalInput = Input.GetAxis("Horizontal");
 
             // Move player
             transform.Translate(Vector3.forward * Time.fixedDeltaTime * branchForwardSpeed);
@@ -177,7 +217,7 @@ public class PlayerController : MonoBehaviour
                 trunkSpawnTimer = 0;
                 // Instantiate trunk piece
                 GameObject newTrunkPiece = Instantiate(
-                    trunkPiecePrefab, transform.position, trunkPiecePrefab.transform.rotation);
+                    trunkPiecePrefab, transform.position, transform.rotation);
                 // Rescale new trunk piece
                 float scaleFactor = 0.1f + 0.1f * (1 - branchTimer / branchDuration);
                 newTrunkPiece.transform.localScale = new Vector3(

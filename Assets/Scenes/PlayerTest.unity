@@ -155,7 +155,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &132743665
 MonoBehaviour:
@@ -172,14 +172,16 @@ MonoBehaviour:
   trunkPiecePrefab: {fileID: 3711423968915613569, guid: b68b4103d662e4a49802973b614ab02d, type: 3}
   leavesPrefab: {fileID: 676536840743707275, guid: ff18c40963c87b34684ed28293bd670d, type: 3}
   acornPrefab: {fileID: 7996875139255752159, guid: d98d2f6d2f5028449a55e78be0c02e27, type: 3}
-  raiseDuration: 5
-  branchDuration: 3
+  arrowPrefab: {fileID: 2714469213239474274, guid: fb10332fe0fa80d48b538301b372f2e5, type: 3}
+  raiseDuration: 2
+  branchDuration: 1
   bloomDuration: 0.5
   growAcornDuration: 0.5
-  raiseVerticalSpeed: 1
-  raiseLateralSpeed: 1
-  branchForwardSpeed: 1
-  branchLateralSpeed: 1
+  raiseVerticalSpeed: 4
+  raiseLateralSpeed: 2
+  branchForwardSpeed: 4
+  branchLateralSpeed: 2
+  arrowRotationSpeed: 666
   trunkSpawnTimeInterval: 0.1
   acornSpawnShift: 0.15
   stillnessThreshold: 0.001
@@ -338,7 +340,7 @@ Transform:
   - {fileID: 786193177}
   - {fileID: 1116269748}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &786193176
 GameObject:
