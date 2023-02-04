@@ -150,7 +150,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 132743663}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.01, z: 0}
+  m_LocalPosition: {x: 9.62, y: 0.01, z: 14.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -172,13 +172,13 @@ MonoBehaviour:
   trunkPiecePrefab: {fileID: 3711423968915613569, guid: b68b4103d662e4a49802973b614ab02d, type: 3}
   leavesPrefab: {fileID: 676536840743707275, guid: ff18c40963c87b34684ed28293bd670d, type: 3}
   acornPrefab: {fileID: 7996875139255752159, guid: d98d2f6d2f5028449a55e78be0c02e27, type: 3}
-  raiseDuration: 7
-  branchDuration: 4
+  raiseDuration: 2
+  branchDuration: 2
   bloomDuration: 0.5
   growAcornDuration: 0.5
   raiseVerticalSpeed: 1
   raiseLateralSpeed: 1
-  branchForwardSpeed: 1
+  branchForwardSpeed: 2
   branchLateralSpeed: 1
   trunkSpawnTimeInterval: 0.1
   acornSpawnShift: 0.15
@@ -382,7 +382,7 @@ MeshCollider:
   m_GameObject: {fileID: 786193176}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   m_Convex: 1
   m_CookingOptions: 30
@@ -578,7 +578,7 @@ MeshCollider:
   m_GameObject: {fileID: 1116269747}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   m_Convex: 1
   m_CookingOptions: 30
