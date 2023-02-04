@@ -9,15 +9,19 @@ public class PlayerController : MonoBehaviour
     public float branchDuration; // The branch grows during branchDuration seconds
     public float raiseVerticalSpeed;
     public float raiseLateralSpeed;
+    public float branchForwardSpeed;
+    public float branchLateralSpeed;
     public float trunkSpawnTimeInterval;
-
-    private enum growthState
+    
+    private enum GrowthState
     {
         raise,
         branch,
         drop
     }
+    private GrowthState growthState;
     private float raiseTimer = 0;
+    private float branchTimer = 0;
     private float trunkSpawnTimer = 0;
     private float horizontalInput = 0;
     private float verticalInput = 0;
@@ -37,9 +41,21 @@ public class PlayerController : MonoBehaviour
     // Update is called EXACTLY once per frame
     private void FixedUpdate()
     {
-        raisePhase();
-        //branchPhase();
-        //dropPhase();
+        switch (growthState)
+        {
+            case GrowthState.raise:
+                raisePhase();
+                break;
+            case GrowthState.branch:
+                branchPhase();
+                break;
+            case GrowthState.drop:
+                dropPhase();
+                break;
+            default:
+                Debug.Log("Vous etes des glands!");
+                break;
+        }
     }
 
     private void raisePhase()
@@ -73,11 +89,50 @@ public class PlayerController : MonoBehaviour
                     trunkPiecePrefab.transform.localScale.z * scaleFactor);
             }
         }
+        else
+        {
+            growthState = GrowthState.branch;
+            raiseTimer = 0;
+            trunkSpawnTimer = 0;
+        }
     }
     private void branchPhase()
     {
-        //horizontalInput = Input.GetAxis("Horizontal");
+        branchTimer += Time.fixedDeltaTime;
+        if (branchTimer < branchDuration)
+        {
+            // Get controller key
+            horizontalInput = Input.GetAxis("Horizontal");
+
+            // Move player
+            transform.Translate(Vector3.forward * Time.fixedDeltaTime * branchForwardSpeed);
+            transform.Translate(Vector3.right * Time.fixedDeltaTime * branchLateralSpeed * horizontalInput);
+
+            // Spawn trunk piece
+            trunkSpawnTimer += Time.fixedDeltaTime;
+            if (trunkSpawnTimer >= trunkSpawnTimeInterval)
+            {
+                // Reset trunk piece spawn timer
+                trunkSpawnTimer = 0;
+                // Instantiate trunk piece
+                GameObject newTrunkPiece = Instantiate(
+                    trunkPiecePrefab, transform.position, trunkPiecePrefab.transform.rotation);
+                // Rescale new trunk piece
+                float scaleFactor = 0.1f + 0.1f * (1 - branchTimer / branchDuration);
+                newTrunkPiece.transform.localScale = new Vector3(
+                    trunkPiecePrefab.transform.localScale.x * scaleFactor,
+                    trunkPiecePrefab.transform.localScale.y,
+                    trunkPiecePrefab.transform.localScale.z * scaleFactor);
+            }
+        }
+        else
+        {
+            growthState = GrowthState.drop;
+            branchTimer = 0;
+            trunkSpawnTimer = 0;
+        }
     }
+
     private void dropPhase()
     {
 
