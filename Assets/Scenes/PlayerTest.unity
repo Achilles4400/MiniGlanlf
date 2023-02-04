@@ -168,7 +168,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trunkPiecePrefab: {fileID: 3711423968915613569, guid: b68b4103d662e4a49802973b614ab02d, type: 3}
-  raiseHeight: 5
+  raiseDuration: 10
+  branchDuration: 10
   raiseVerticalSpeed: 1
   raiseLateralSpeed: 1
   trunkSpawnTimeInterval: 0.1
