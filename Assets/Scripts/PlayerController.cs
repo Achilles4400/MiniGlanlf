@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     public GameObject leavesPrefab;
     public GameObject acornPrefab;
     public GameObject arrowPrefab;
+    public GameObject mainCamera;
     public float raiseDuration;
     public float branchDuration;
     public float bloomDuration;
@@ -22,9 +23,10 @@ public class PlayerController : MonoBehaviour
     public float stillnessThreshold;
     public float initialDrag;
     public float dragIncreaseExponent;
+    public bool isDirectionTriggered;
 
     private Rigidbody rb;
-    private SphereCollider collider;
+    private new SphereCollider collider;
     private GameObject leaves;
     private GameObject acorn;
     private GameObject arrow;
@@ -57,10 +59,11 @@ public class PlayerController : MonoBehaviour
         trunkSpawnTimer = trunkSpawnTimeInterval;
         rb = GetComponent<Rigidbody>();
         collider = GetComponent<SphereCollider>();
-        isOnGround = true; // Start on ground
+        isOnGround = true; // Start on the ground
         rb.useGravity = false; // No fall
         collider.enabled = false; // No collision
         rb.drag = initialDrag;
+        isDirectionTriggered = false;
     }
 
     // Update is called once per frame
@@ -201,12 +204,14 @@ public class PlayerController : MonoBehaviour
             // End direction phase
             growthState = GrowthState.branch;
             transform.rotation = arrow.transform.rotation;
+            isDirectionTriggered = true;
             Destroy(arrow);
         }
     }
 
     private void branchPhase()
     {
+        isDirectionTriggered = false;
         branchTimer += Time.fixedDeltaTime;
         if (branchTimer < branchDuration)
         {
@@ -290,7 +295,8 @@ public class PlayerController : MonoBehaviour
 
     public void resetPhase()
     {
-        transform.rotation = Quaternion.identity;
+        //transform.rotation = Quaternion.identity;
+        transform.rotation = Quaternion.Euler(mainCamera.transform.rotation.x, 0, mainCamera.transform.rotation.z);
         growthState = GrowthState.raise;
     }
 

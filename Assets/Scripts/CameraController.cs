@@ -4,15 +4,25 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+    public PlayerController player;
+
+    private Vector3 offset;
+    private Quaternion currentRotation;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        offset = player.transform.position - transform.position;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void LateUpdate()
     {
-        
+        if (player.isDirectionTriggered)
+        {
+            float desiredAngle = player.transform.eulerAngles.y;
+            currentRotation = Quaternion.Euler(0, desiredAngle, 0);
+        }
+        transform.position = player.transform.position - (currentRotation * offset);
+        transform.LookAt(player.transform);
     }
 }
