@@ -311,22 +311,7 @@ public class PlayerController : MonoBehaviour
 
     public void resetPhase()
     {
-        Debug.Log("init   " + transform.rotation.eulerAngles);
-        Debug.Log("target " + mainCamera.transform.rotation.eulerAngles);
-        Debug.Log("target " + Quaternion.Euler(mainCamera.transform.rotation.eulerAngles.x, mainCamera.transform.rotation.eulerAngles.y, mainCamera.transform.rotation.eulerAngles.z).eulerAngles);
-        
-        //transform.rotation = Quaternion.Euler(mainCamera.transform.rotation.eulerAngles.x, 0, mainCamera.transform.rotation.eulerAngles.z);
-        
-        /*
-        Quaternion rot = transform.rotation;
-        rot.eulerAngles = new Vector3(mainCamera.transform.rotation.eulerAngles.x, 0, mainCamera.transform.rotation.eulerAngles.z);
-        transform.rotation = rot;
-        */
-
         transform.rotation = Quaternion.Euler(0, mainCamera.transform.rotation.eulerAngles.y, 0);
-
-        //transform.rotation = mainCamera.transform.rotation;
-        Debug.Log("result " + transform.rotation.eulerAngles);
         growthState = GrowthState.raise;
     }
 
