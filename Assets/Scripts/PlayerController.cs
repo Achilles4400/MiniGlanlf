@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     public float branchLateralSpeed;
     public float trunkSpawnTimeInterval;
     public float acornSpawnShift;
+    public float stillnessThreshold;
 
     private Rigidbody rb;
     private SphereCollider collider;
@@ -28,7 +29,8 @@ public class PlayerController : MonoBehaviour
         bloom,
         branch,
         growAcorn,
-        drop
+        drop,
+        reset
     }
     private GrowthState growthState;
     private float raiseTimer = 0;
@@ -38,6 +40,7 @@ public class PlayerController : MonoBehaviour
     private float trunkSpawnTimer = 0;
     private float horizontalInput = 0;
     private float verticalInput = 0;
+    private bool isOnGround;
 
     // Start is called before the first frame update
     void Start()
@@ -45,6 +48,7 @@ public class PlayerController : MonoBehaviour
         trunkSpawnTimer = trunkSpawnTimeInterval;
         rb = GetComponent<Rigidbody>();
         collider = GetComponent<SphereCollider>();
+        isOnGround = true; // Start on ground
         rb.useGravity = false; // No fall
         collider.enabled = false; // No collision
     }
@@ -80,6 +84,10 @@ public class PlayerController : MonoBehaviour
                 // 5 drop the acorn
                 dropPhase();
                 break;
+            case GrowthState.reset:
+                // 5 drop the acorn
+                resetPhase();
+                break;
             default:
                 Debug.Log("Vous etes des glands!");
                 break;
@@ -88,6 +96,7 @@ public class PlayerController : MonoBehaviour
 
     private void raisePhase()
     {
+        isOnGround = false;
         raiseTimer += Time.fixedDeltaTime;
         if (raiseTimer < raiseDuration)
         {
@@ -219,6 +228,38 @@ public class PlayerController : MonoBehaviour
         collider.enabled = true;
         acorn.transform.position = transform.position; // Acorn follows player
         // End drop Phase
-        // TODO
+        if (isStill())
+        {
+            growthState = GrowthState.reset;
+            rb.useGravity = false;
+            collider.enabled = false;
+        }
+    }
+
+    public void resetPhase()
+    {
+        transform.rotation = Quaternion.identity;
+        growthState = GrowthState.raise;
+    }
+
+    private bool isStill()
+    {
+        if (rb.velocity.magnitude < stillnessThreshold && isOnGround)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            // Collide with ground
+            isOnGround = true;
+        }
     }
 }
