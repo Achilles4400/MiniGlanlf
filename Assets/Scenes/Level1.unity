@@ -2075,7 +2075,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1980150659
 GameObject:
@@ -2248,6 +2248,10 @@ PrefabInstance:
     - target: {fileID: 3892816660405379984, guid: 6852fffcdf6f6a74eb148701c9323841, type: 3}
       propertyPath: m_Name
       value: TerrainLevel1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3892816660405379984, guid: 6852fffcdf6f6a74eb148701c9323841, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 3892816660405379985, guid: 6852fffcdf6f6a74eb148701c9323841, type: 3}
       propertyPath: m_RootOrder
