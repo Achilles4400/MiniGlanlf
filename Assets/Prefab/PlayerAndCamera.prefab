@@ -182,8 +182,8 @@ MonoBehaviour:
   acornPrefab: {fileID: 7996875139255752159, guid: d98d2f6d2f5028449a55e78be0c02e27, type: 3}
   arrowPrefab: {fileID: 2714469213239474274, guid: fb10332fe0fa80d48b538301b372f2e5, type: 3}
   mainCamera: {fileID: 2640544974564658504}
-  raiseDuration: 3
-  branchDuration: 1.5
+  raiseDuration: 5
+  branchDuration: 2.5
   bloomDuration: 0.5
   growAcornDuration: 0.5
   raiseVerticalSpeed: 4
@@ -224,5 +224,5 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.1
+  m_Radius: 0.9
   m_Center: {x: 0, y: 0, z: 0}

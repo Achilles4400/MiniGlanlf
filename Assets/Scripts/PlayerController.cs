@@ -298,6 +298,7 @@ public class PlayerController : MonoBehaviour
     private void dropPhase()
     {
         acorn.transform.position = transform.position; // Acorn follows player
+        acorn.transform.rotation = transform.rotation; // Acorn follows player
         rb.drag *= dragIncreaseExponent;
         // End drop Phase
         if (isStill())
