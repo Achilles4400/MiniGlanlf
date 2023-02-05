@@ -38,6 +38,7 @@ public class audioManager : MonoBehaviour
     {
         if (currentAudio != gameManagerScript.closeness)
         {
+            Debug.Log("Audio");
             currentSample = speaker[0].timeSamples;
             //Switch old audio to speaker 1
             speaker[1].clip = clip[currentAudio];
@@ -51,11 +52,10 @@ public class audioManager : MonoBehaviour
             //Cross Fade
             StartCoroutine(crossFade(fadeDelay));
             
-
         }
     }
 
-    private IEnumerator crossFade(float fadeDelay)
+    private IEnumerator crossFade(float delay)
     {
         speaker[0].volume = 0f;
         speaker[1].volume = 1f;
@@ -63,14 +63,15 @@ public class audioManager : MonoBehaviour
         speaker[0].Play();
         speaker[1].Play();
 
-        while(speaker[1].volume >= 0f)
+        while(speaker[1].volume >= 0.01f)
         {
             speaker[0].volume += fadeCoeff;
             speaker[1].volume -= fadeCoeff;
-            yield return new WaitForSeconds(fadeDelay);
-            
+            yield return new WaitForSecondsRealtime(delay);
         }
 
+        Debug.Log("Stop");
+        speaker[0].volume = 1f;
         speaker[1].Stop();
 
     }
