@@ -22,7 +22,10 @@ public class CameraController : MonoBehaviour
             float desiredAngle = player.transform.eulerAngles.y;
             currentRotation = Quaternion.Euler(0, desiredAngle, 0);
         }
-        transform.position = player.transform.position - (currentRotation * offset);
-        transform.LookAt(player.transform);
+        if (!player.isIdle)
+        {
+            transform.position = player.transform.position - (currentRotation * offset);
+            transform.LookAt(player.transform);
+        }
     }
 }

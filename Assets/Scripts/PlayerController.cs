@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     public GameObject acornPrefab;
     public GameObject arrowPrefab;
     public GameObject mainCamera;
+    public float idleRotationSpeed;
     public float raiseDuration;
     public float branchDuration;
     public float bloomDuration;
@@ -23,6 +24,7 @@ public class PlayerController : MonoBehaviour
     public float stillnessThreshold;
     public float initialDrag;
     public float dragIncreaseExponent;
+    public bool isIdle;
     public bool isDirectionTriggered;
 
     private Rigidbody rb;
@@ -64,6 +66,7 @@ public class PlayerController : MonoBehaviour
         rb.useGravity = false; // No fall
         collider.enabled = false; // No collision
         rb.drag = initialDrag;
+        isIdle = true;
         isDirectionTriggered = false;
     }
 
@@ -137,8 +140,13 @@ public class PlayerController : MonoBehaviour
 
     private void idlePhase()
     {
+        mainCamera.transform.RotateAround(transform.position, Vector3.up,
+            Time.fixedDeltaTime * horizontalInput * idleRotationSpeed);
+        Debug.Log(transform.position + " " + Time.fixedDeltaTime * horizontalInput * idleRotationSpeed);
         if (isSpacePressed)
         {
+            isIdle = false;
+            transform.rotation = mainCamera.transform.rotation;
             growthState = GrowthState.raise;
         }
     }
