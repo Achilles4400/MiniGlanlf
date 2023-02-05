@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
     public float dragIncreaseExponent;
     public bool isIdle;
     public bool isDirectionTriggered;
+    public bool isInDeathZone = false;
 
     private Rigidbody rb;
     private new SphereCollider collider;
@@ -167,8 +168,8 @@ public class PlayerController : MonoBehaviour
             transform.Translate(myForward * Time.fixedDeltaTime * raiseLateralSpeed * verticalInput, Space.World);
 
             // TODO here
-            //transform.Translate(myRight * Time.fixedDeltaTime * raiseLateralSpeed * horizontalInput, Space.World);
-            cameraController.currentRotation *= Quaternion.Euler(0, 45, 0);
+            transform.Translate(myRight * Time.fixedDeltaTime * raiseLateralSpeed * horizontalInput, Space.World);
+            //cameraController.currentRotation *= Quaternion.Euler(0, dy, 0);
 
             // Spawn trunk piece
             trunkSpawnTimer += Time.fixedDeltaTime;
@@ -326,6 +327,10 @@ public class PlayerController : MonoBehaviour
 
     public void resetPhase()
     {
+        if (isInDeathZone)
+        {
+            gameManager.Death();
+        }
         transform.rotation = Quaternion.Euler(0, mainCamera.transform.rotation.eulerAngles.y, 0);
         growthState = GrowthState.raise;
     }
@@ -362,6 +367,20 @@ public class PlayerController : MonoBehaviour
         {
             case "Goal":
                 gameManager.CompleteLevel();
+                break;
+
+            case "GameOverSurface":
+                isInDeathZone = true;
+                break;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        switch (other.tag)
+        {
+            case "GameOverSurface":
+                isInDeathZone = false;
                 break;
         }
     }
