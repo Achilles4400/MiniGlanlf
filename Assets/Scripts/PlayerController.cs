@@ -230,6 +230,8 @@ public class PlayerController : MonoBehaviour
     private void directionPhase()
     {
         arrow.transform.Rotate(Vector3.up * Time.fixedDeltaTime * arrowRotationSpeed);
+        float dThetaY = Time.fixedDeltaTime * idleRotationSpeed * horizontalInput;
+        mainCamera.GetComponent<CameraController>().addRotation(Quaternion.Euler(0, dThetaY, 0));
         if (isSpacePressed)
         {
             // End direction phase
@@ -262,8 +264,10 @@ public class PlayerController : MonoBehaviour
                 // Reset trunk piece spawn timer
                 trunkSpawnTimer = 0;
                 // Instantiate trunk piece
+                // TODO here
+                Quaternion myRotation = transform.rotation; // Original
                 GameObject newTrunkPiece = Instantiate(
-                    trunkPiecePrefab, transform.position, transform.rotation);
+                    trunkPiecePrefab, transform.position, myRotation);
                 // Rescale new trunk piece
                 float scaleFactor = 0.1f + 0.1f * (1 - branchTimer / branchDuration);
                 newTrunkPiece.transform.localScale = new Vector3(
