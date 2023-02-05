@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.16592254, g: 0.24090718, b: 0.39982587, a: 1}
+  m_IndirectSpecularColor: {r: 0.44748765, g: 0.5319664, b: 0.66988075, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1286,6 +1286,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4575083496622748487, guid: cf5e5f7862477bf4aa0416c4ddaeeb71, type: 3}
+      propertyPath: clip.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 90a0971987e71a8478822f6812974c1c, type: 3}
+    - target: {fileID: 4575083496622748487, guid: cf5e5f7862477bf4aa0416c4ddaeeb71, type: 3}
+      propertyPath: clip.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: 830eac5d11e9c754fb0c8e1db1b66c8a, type: 3}
+    - target: {fileID: 4575083496622748487, guid: cf5e5f7862477bf4aa0416c4ddaeeb71, type: 3}
+      propertyPath: clip.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: 90a4533af1db5e14491b63c1509922e8, type: 3}
+    - target: {fileID: 4575083496622748487, guid: cf5e5f7862477bf4aa0416c4ddaeeb71, type: 3}
+      propertyPath: clip.Array.data[3]
+      value: 
+      objectReference: {fileID: 8300000, guid: ecdfca89b45620642b96e37dd640ce19, type: 3}
     - target: {fileID: 6476737475391136096, guid: cf5e5f7862477bf4aa0416c4ddaeeb71, type: 3}
       propertyPath: m_RootOrder
       value: 1
