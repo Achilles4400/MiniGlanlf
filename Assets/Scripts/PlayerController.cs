@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     public GameObject acornPrefab;
     public GameObject arrowPrefab;
     public GameObject mainCamera;
+    public GameObject starterCanvas;
     //public CameraController cameraController;
     public float idleRotationSpeed;
     public float raiseDuration;
@@ -153,6 +154,7 @@ public class PlayerController : MonoBehaviour
         {
             isIdle = false;
             growthState = GrowthState.raise;
+            Destroy(starterCanvas);
         }
     }
 
