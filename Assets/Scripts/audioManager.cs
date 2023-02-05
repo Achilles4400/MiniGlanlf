@@ -8,7 +8,7 @@ public class audioManager : MonoBehaviour
     [SerializeField] private AudioClip[] clip = new AudioClip[4];
 
     private int currentSample;
-    [SerializeField] private List<AudioSource> speaker = new List<AudioSource>();
+    [SerializeField] public List<AudioSource> speaker = new List<AudioSource>();
     private GameManager gameManagerScript;
 
     private float fadeDelay;
@@ -38,7 +38,6 @@ public class audioManager : MonoBehaviour
     {
         if (currentAudio != gameManagerScript.closeness)
         {
-            Debug.Log("Audio");
             currentSample = speaker[0].timeSamples;
             //Switch old audio to speaker 1
             speaker[1].clip = clip[currentAudio];
@@ -70,7 +69,6 @@ public class audioManager : MonoBehaviour
             yield return new WaitForSecondsRealtime(delay);
         }
 
-        Debug.Log("Stop");
         speaker[0].volume = 1f;
         speaker[1].Stop();
 

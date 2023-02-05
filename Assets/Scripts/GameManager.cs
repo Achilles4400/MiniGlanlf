@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
 
     public GameObject successLevelUI;
 
+    private audioManager audioManager;
+
     //Distance threshold
     [SerializeField] private int[] distThresholds = new int[3]; //To set in editor
     private Transform playerPos, goalPos;
@@ -15,7 +17,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        playerPos = GameObject.Find("Player").transform;
+        audioManager = GameObject.Find("Sound Manager").GetComponent<audioManager>();
+        playerPos = GameObject.Find("GG").transform;
         goalPos = GameObject.Find("Goal").transform;
     }
 
@@ -55,6 +58,10 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Level Complete!");
         successLevelUI.SetActive(true);
+        foreach(AudioSource aud in audioManager.speaker)
+        {
+            aud.enabled = false;
+        }
     }
 
 

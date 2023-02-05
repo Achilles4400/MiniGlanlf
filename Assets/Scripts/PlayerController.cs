@@ -56,9 +56,12 @@ public class PlayerController : MonoBehaviour
     public float verticalInput = 0;
     private bool isOnGround;
     
+    private GameManager gameManager;
+
     // Start is called before the first frame update
     void Start()
     {
+        gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
         trunkSpawnTimer = trunkSpawnTimeInterval;
         rb = GetComponent<Rigidbody>();
         collider = GetComponent<SphereCollider>();
@@ -346,6 +349,16 @@ public class PlayerController : MonoBehaviour
         {
             // Collide with ground
             isOnGround = true;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        switch(other.tag)
+        {
+            case "Goal":
+                gameManager.CompleteLevel();
+                break;
         }
     }
 }

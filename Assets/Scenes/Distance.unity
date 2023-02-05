@@ -638,7 +638,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   successLevelUI: {fileID: 0}
-  distThresholds: 0a0000001e000000320000004b000000
+  distThresholds: 0a0000001e00000032000000
   closeness: 0
   distance: 0
 --- !u!4 &564952233

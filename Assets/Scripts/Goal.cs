@@ -5,17 +5,21 @@ using UnityEngine;
 public class Goal : MonoBehaviour
 {
     private List<Transform> goalPos = new List<Transform>();
+    private Transform goal;
+    private GameManager gameManager;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        for (int i = 0; i < transform.childCount; i++)
+        
+        goal = transform.GetChild(0);
+        for (int i = 1; i < transform.childCount; i++)
         {
             goalPos.Add(transform.GetChild(i));
         }
 
-        transform.Translate(goalPos[Random.Range(0, goalPos.Count)].position);
+        goal.Translate(goalPos[Random.Range(0, goalPos.Count)].position);
     }
 
     // Update is called once per frame
@@ -32,8 +36,9 @@ public class Goal : MonoBehaviour
                 Debug.Log("game over");
                 break;
 
-            case "Goal":
+            case "Player":
                 Debug.Log("success");
+                
                 break;
 
             default:
