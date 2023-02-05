@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     public GameObject acornPrefab;
     public GameObject arrowPrefab;
     public GameObject mainCamera;
+    public CameraController cameraController;
     public float idleRotationSpeed;
     public float raiseDuration;
     public float branchDuration;
@@ -65,6 +66,7 @@ public class PlayerController : MonoBehaviour
         trunkSpawnTimer = trunkSpawnTimeInterval;
         rb = GetComponent<Rigidbody>();
         collider = GetComponent<SphereCollider>();
+        cameraController = mainCamera.GetComponent<CameraController>();
         isOnGround = true; // Start on the ground
         rb.useGravity = false; // No fall
         collider.enabled = false; // No collision
@@ -162,8 +164,11 @@ public class PlayerController : MonoBehaviour
             Vector3 myForward = new Vector3(mainCamera.transform.forward.x, 0, mainCamera.transform.forward.z).normalized;
             Vector3 myRight = new Vector3(mainCamera.transform.right.x, 0, mainCamera.transform.right.z).normalized;
             transform.Translate(Vector3.up * Time.fixedDeltaTime * raiseVerticalSpeed);
-            transform.Translate(myRight * Time.fixedDeltaTime * raiseLateralSpeed * horizontalInput, Space.World);
             transform.Translate(myForward * Time.fixedDeltaTime * raiseLateralSpeed * verticalInput, Space.World);
+
+            // TODO here
+            //transform.Translate(myRight * Time.fixedDeltaTime * raiseLateralSpeed * horizontalInput, Space.World);
+            cameraController.currentRotation *= Quaternion.Euler(0, 45, 0);
 
             // Spawn trunk piece
             trunkSpawnTimer += Time.fixedDeltaTime;
