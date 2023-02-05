@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public GameObject hitTheGround;
     public GameObject trunkPiecePrefab;
     public GameObject leavesPrefab;
     public GameObject acornPrefab;
@@ -59,7 +60,7 @@ public class PlayerController : MonoBehaviour
     public float horizontalInput = 0;
     public float verticalInput = 0;
     private bool isOnGround;
-    
+
     private GameManager gameManager;
 
     // Start is called before the first frame update
@@ -199,7 +200,7 @@ public class PlayerController : MonoBehaviour
             trunkSpawnTimer = 0;
         }
     }
-    
+
     private void bloomPhase()
     {
         // Spawn leaves
@@ -254,7 +255,7 @@ public class PlayerController : MonoBehaviour
             Vector3 myForward = new Vector3(mainCamera.transform.forward.x, 0, mainCamera.transform.forward.z).normalized;
             Vector3 myRight = new Vector3(mainCamera.transform.right.x, 0, mainCamera.transform.right.z).normalized;
             transform.Translate(myForward * Time.fixedDeltaTime * branchForwardSpeed, Space.World);
-            
+
             //transform.Translate(myRight * Time.fixedDeltaTime * branchLateralSpeed * horizontalInput, Space.World);
             float dThetaY = Time.fixedDeltaTime * branchLateralSpeed * horizontalInput;
             mainCamera.GetComponent<CameraController>().addRotation(Quaternion.Euler(0, dThetaY, 0));
@@ -373,7 +374,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        switch(other.tag)
+        switch (other.tag)
         {
             case "Goal":
                 gameManager.CompleteLevel();
