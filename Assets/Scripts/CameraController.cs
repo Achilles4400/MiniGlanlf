@@ -5,13 +5,14 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     public PlayerController player;
-    public Quaternion currentRotation;
 
+    private Quaternion currentRotation;
     private Vector3 offset;
 
     // Start is called before the first frame update
     void Start()
     {
+        currentRotation = Quaternion.Euler(0, 0, 0);
         offset = player.transform.position - transform.position;
     }
 
@@ -19,13 +20,18 @@ public class CameraController : MonoBehaviour
     {
         if (player.isDirectionTriggered)
         {
-            float desiredAngle = player.transform.eulerAngles.y;
-            currentRotation = Quaternion.Euler(0, desiredAngle, 0);
+            // Align with player
+            currentRotation = Quaternion.Euler(0, player.transform.eulerAngles.y, 0);
         }
         if (!player.isIdle)
         {
             transform.position = player.transform.position - (currentRotation * offset);
             transform.LookAt(player.transform);
         }
+    }
+
+    public void addRotation(Quaternion q)
+    {
+        currentRotation *= q;
     }
 }

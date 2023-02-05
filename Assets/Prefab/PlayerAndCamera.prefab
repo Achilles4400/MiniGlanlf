@@ -287,8 +287,9 @@ MonoBehaviour:
   growAcornDuration: 0.5
   raiseVerticalSpeed: 4
   raiseLateralSpeed: 3
+  raiseLateralCameraSpeed: 50
   branchForwardSpeed: 4
-  branchLateralSpeed: 3
+  branchLateralSpeed: 50
   arrowRotationSpeed: 800
   trunkSpawnTimeInterval: 0.1
   acornSpawnShift: 0.15
@@ -297,6 +298,7 @@ MonoBehaviour:
   dragIncreaseExponent: 1.01
   isIdle: 0
   isDirectionTriggered: 0
+  isInDeathZone: 0
   horizontalInput: 0
   verticalInput: 0
 --- !u!54 &7376548490985435239
