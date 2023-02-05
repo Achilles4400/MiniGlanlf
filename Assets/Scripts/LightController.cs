@@ -24,7 +24,9 @@ public class LightController : MonoBehaviour
     private float intensityMagnitude()
     {
         float xRot = dirLight.transform.rotation.eulerAngles.x;
-        Debug.Log(xRot + " -> " + Mathf.Cos(0.01745329251f * xRot));
+        Debug.Log(dirLight.transform.rotation.eulerAngles.x + " " + dirLight.transform.localEulerAngles.x);
+
+        //Debug.Log(xRot + " -> " + Mathf.Cos(0.01745329251f * xRot));
         return (1 + Mathf.Cos(0.01745329251f * xRot)) / 2;
     }
 }
