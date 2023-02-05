@@ -2583,15 +2583,15 @@ PrefabInstance:
       objectReference: {fileID: 157137214}
     - target: {fileID: 2995200049944565237, guid: 8a284863ebe5694438c6f354c06abfae, type: 3}
       propertyPath: distThresholds.Array.data[0]
-      value: 40
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 2995200049944565237, guid: 8a284863ebe5694438c6f354c06abfae, type: 3}
       propertyPath: distThresholds.Array.data[1]
-      value: 80
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 2995200049944565237, guid: 8a284863ebe5694438c6f354c06abfae, type: 3}
       propertyPath: distThresholds.Array.data[2]
-      value: 130
+      value: 170
       objectReference: {fileID: 0}
     - target: {fileID: 4085891584797398908, guid: 8a284863ebe5694438c6f354c06abfae, type: 3}
       propertyPath: m_RootOrder
