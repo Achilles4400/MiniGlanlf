@@ -52,10 +52,10 @@ public class PlayerController : MonoBehaviour
     private float growAcornTimer = 0;
     private float trunkSpawnTimer = 0;
     private bool isSpacePressed = false;
-    private float horizontalInput = 0;
-    private float verticalInput = 0;
+    public float horizontalInput = 0;
+    public float verticalInput = 0;
     private bool isOnGround;
-
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -142,7 +142,6 @@ public class PlayerController : MonoBehaviour
     {
         mainCamera.transform.RotateAround(transform.position, Vector3.up,
             Time.fixedDeltaTime * horizontalInput * idleRotationSpeed);
-        Debug.Log(transform.position + " " + Time.fixedDeltaTime * horizontalInput * idleRotationSpeed);
         if (isSpacePressed)
         {
             isIdle = false;
