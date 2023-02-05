@@ -4,20 +4,33 @@ using UnityEngine;
 
 public class audioManager : MonoBehaviour
 {
-    private int currentAudio;
+    [SerializeField] private int currentAudio;
     [SerializeField] private AudioClip[] clip = new AudioClip[4];
 
-    private int timeSample;
-    private AudioSource speaker;
+    private int currentSample;
+    [SerializeField] private List<AudioSource> speaker = new List<AudioSource>();
     private GameManager gameManagerScript;
+
+    private float fadeDelay;
+    private float fadeCoeff;
+
+
 
     // Start is called before the first frame update
     void Start()
     {
-        speaker = GetComponent<AudioSource>();
+        fadeDelay = 0.01f;
+        fadeCoeff = 0.002f;
+
+        foreach(AudioSource speak in GetComponents<AudioSource>())
+        {
+            speaker.Add(speak);
+        }
+
         gameManagerScript = GameObject.Find("Game Manager").GetComponent<GameManager>();
-        currentAudio = clip.Length;
-        speaker.clip = clip[currentAudio];
+        currentAudio = clip.Length - 1;
+        speaker[0].clip = clip[currentAudio];
+        speaker[0].Play();
 
     }
 
@@ -25,12 +38,42 @@ public class audioManager : MonoBehaviour
     {
         if (currentAudio != gameManagerScript.closeness)
         {
-            timeSample = speaker.timeSamples;
-            speaker.clip = clip[gameManagerScript.closeness];
-            speaker.timeSamples = timeSample;
-            speaker.Play();
+            Debug.Log("Audio");
+            currentSample = speaker[0].timeSamples;
+            //Switch old audio to speaker 1
+            speaker[1].clip = clip[currentAudio];
+            speaker[1].timeSamples = currentSample;
+
+            //Switch new audio to speaker 0
+            speaker[0].clip = clip[gameManagerScript.closeness];
+            speaker[0].timeSamples = currentSample;
             currentAudio = gameManagerScript.closeness;
+
+            //Cross Fade
+            StartCoroutine(crossFade(fadeDelay));
+            
         }
+    }
+
+    private IEnumerator crossFade(float delay)
+    {
+        speaker[0].volume = 0f;
+        speaker[1].volume = 1f;
+
+        speaker[0].Play();
+        speaker[1].Play();
+
+        while(speaker[1].volume >= 0.01f)
+        {
+            speaker[0].volume += fadeCoeff;
+            speaker[1].volume -= fadeCoeff;
+            yield return new WaitForSecondsRealtime(delay);
+        }
+
+        Debug.Log("Stop");
+        speaker[0].volume = 1f;
+        speaker[1].Stop();
+
     }
 
 

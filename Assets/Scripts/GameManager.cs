@@ -8,15 +8,15 @@ public class GameManager : MonoBehaviour
     public GameObject successLevelUI;
 
     //Distance threshold
-    [SerializeField] private int[] distThresholds = new int[4]; //To set in editor
-    private Transform playerPos, goalPost;
+    [SerializeField] private int[] distThresholds = new int[3]; //To set in editor
+    private Transform playerPos, goalPos;
     [SerializeField] public int closeness;
     [SerializeField] private float distance;
 
     private void Start()
     {
         playerPos = GameObject.Find("Player").transform;
-        goalPost = GameObject.Find("Goal").transform;
+        goalPos = GameObject.Find("Goal").transform;
     }
 
 
@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
     {
         foreach(float dist in distThresholds)
         {
-            Gizmos.DrawWireSphere(goalPost.position, dist);
+            Gizmos.DrawWireSphere(goalPos.position, dist);
         }
 
     }
@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
     {
         int i = 0;
         // closeness = 0 -> Close; closeness = 3 -> Far
-        distance = Mathf.Abs((playerPos.position - goalPost.position).magnitude);
+        distance = Mathf.Abs((playerPos.position - goalPos.position).magnitude);
         
 
         foreach(int distThresh in distThresholds)
