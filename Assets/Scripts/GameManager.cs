@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -57,11 +58,22 @@ public class GameManager : MonoBehaviour
     public void CompleteLevel()
     {
         Debug.Log("Level Complete!");
-        successLevelUI.SetActive(true);
-        foreach(AudioSource aud in audioManager.speaker)
+        SceneManager.LoadScene("End Menu");
+        //successLevelUI.SetActive(true);
+        /*
+         foreach(AudioSource aud in audioManager.speaker)
         {
             aud.enabled = false;
         }
+        */
+    }
+
+
+    public void Death()
+    {
+        Debug.Log("Death");
+        SceneManager.LoadScene("Death Menu");
+
     }
 
 
