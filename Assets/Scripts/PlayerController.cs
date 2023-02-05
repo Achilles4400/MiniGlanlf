@@ -367,6 +367,10 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ground"))
         {
+            if (!isOnGround)
+            {
+                hitTheGround.GetComponent<AudioSource>().Play();
+            }
             // Collide with ground
             isOnGround = true;
         }

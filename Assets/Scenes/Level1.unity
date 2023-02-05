@@ -2395,6 +2395,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TerrainLevel1
       objectReference: {fileID: 0}
+    - target: {fileID: 3892816660405379984, guid: 6852fffcdf6f6a74eb148701c9323841, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 3892816660405379985, guid: 6852fffcdf6f6a74eb148701c9323841, type: 3}
       propertyPath: m_RootOrder
       value: 5
