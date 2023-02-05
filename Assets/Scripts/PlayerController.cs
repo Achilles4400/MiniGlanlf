@@ -148,7 +148,6 @@ public class PlayerController : MonoBehaviour
         if (isSpacePressed)
         {
             isIdle = false;
-            transform.rotation = mainCamera.transform.rotation;
             growthState = GrowthState.raise;
         }
     }
